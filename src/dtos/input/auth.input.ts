@@ -11,3 +11,4 @@ export class RegisterInput {
   @Field(() => String)
   password!: string
 }
+

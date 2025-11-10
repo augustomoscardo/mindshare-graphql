@@ -1,11 +1,13 @@
 import { Resolver, Mutation, Arg } from "type-graphql";
 import { RegisterInput } from "../dtos/input/auth.input";
 import { RegisterOutput } from "../dtos/output/auth.output";
-import type { AuthService } from "../services/auth.service";
+import { AuthService } from "../services/auth.service";
 
 @Resolver()
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) { }
+  private authService = new AuthService()
+
+  @Mutation(() => )
 
   @Mutation(() => RegisterOutput)
   async register(
