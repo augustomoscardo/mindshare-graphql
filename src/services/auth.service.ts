@@ -27,7 +27,7 @@ export class AuthService {
         email: data.email
       }
     })
-    
+
     if (existingUser) throw new Error("E-mail já cadastrado!")
 
     const hash = await hashPassword(data.password)
@@ -41,30 +41,21 @@ export class AuthService {
     })
 
     return this.generateTokens(user)
-
   }
-
-
-  // generateTokens(user: User) {
-  //   const token = signJwt({ id: user.id, email: user.email }, '15m')
-  //   const refreshToken = signJwt({ id: user.id, email: user.email }, '1d')
-
-  //   return { token, refreshToken, user }
-  // }
 
   generateTokens(user: User) {
-  try {
-    
-    const token = signJwt({ id: user.id, email: user.email }, '15m')
-    const refreshToken = signJwt({ id: user.id, email: user.email }, '1d')
-    
-    return {
-      token,
-      refreshToken,
-      user
+    try {
+
+      const token = signJwt({ id: user.id, email: user.email }, '15m')
+      const refreshToken = signJwt({ id: user.id, email: user.email }, '1d')
+
+      return {
+        token,
+        refreshToken,
+        user
+      }
+    } catch (error) {
+      throw new Error("Erro ao gerar tokens")
     }
-  } catch (error) {
-    throw new Error("Erro ao gerar tokens")
   }
-}
 }
