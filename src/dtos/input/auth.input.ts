@@ -12,3 +12,11 @@ export class RegisterInput {
   password!: string
 }
 
+@InputType()
+export class LoginInput {
+  @Field(() => String)
+  email!: string
+
+  @Field(() => String)
+  password!: string
+}

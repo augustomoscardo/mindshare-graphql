@@ -1,13 +1,19 @@
-import { Resolver, Mutation, Arg } from "type-graphql";
-import { RegisterInput } from "../dtos/input/auth.input";
-import { RegisterOutput } from "../dtos/output/auth.output";
+import { Resolver, Mutation, Arg, UseMiddleware } from "type-graphql";
+import { LoginInput, RegisterInput } from "../dtos/input/auth.input";
+import { LoginOutput, RegisterOutput } from "../dtos/output/auth.output";
 import { AuthService } from "../services/auth.service";
+import { isAuth } from "../middlewares/auth.middleware";
 
 @Resolver()
 export class AuthResolver {
   private authService = new AuthService()
 
-  @Mutation(() => )
+  @Mutation(() => LoginOutput)
+  async login(
+    @Arg('data', () => LoginInput) data: LoginInput
+  ): Promise<LoginOutput> {
+    return this.authService.login(data)
+  }
 
   @Mutation(() => RegisterOutput)
   async register(
