@@ -1,4 +1,16 @@
-import { ObjectType, Field, ID, GraphQLISODateTime } from "type-graphql";
+import { ObjectType, Field, ID, GraphQLISODateTime, registerEnumType } from "type-graphql";
+
+export enum Role {
+  owner = 'owner',
+  admin = 'admin',
+  member = 'member',
+  viewer = 'viewer',
+}
+
+registerEnumType(Role, {
+  name: 'Role',
+  description: 'User role in the system',
+})
 
 @ObjectType()
 export class UserModel {
@@ -13,6 +25,9 @@ export class UserModel {
 
   @Field(() => String, { nullable: true })
   password?: string;
+
+  @Field(() => Role, { nullable: true })
+  role?: string
 
   @Field(() => GraphQLISODateTime)
   createdAt: Date;
