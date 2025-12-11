@@ -1,15 +1,43 @@
 import { useState } from "react";
 import logo from "@/assets/logo.svg";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "sonner";
 
 export function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent) { }
+  const login = useAuthStore((state) => state.login);
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const loginMutate = await login({ email, password });
+
+      if (loginMutate) {
+        toast.success("Login realizado com sucesso!");
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Erro ao realizar o login");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] items-center justify-center gap-6">
@@ -50,10 +78,7 @@ export function Login() {
               />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full "
-            >
+            <Button type="submit" className="w-full" disabled={loading}>
               Entrar
             </Button>
           </form>
@@ -73,5 +98,5 @@ export function Login() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

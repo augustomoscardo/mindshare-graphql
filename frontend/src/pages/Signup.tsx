@@ -1,24 +1,43 @@
-import { useState } from "react"
+import { useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import logo from "@/assets/logo.svg"
-import { Link } from "react-router-dom"
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.svg";
+import { Link } from "react-router-dom";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "sonner";
 
 export function Signup() {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const signup = useAuthStore((state) => state.signup);
 
-  const handleSubmit = async (e: React.FormEvent) => { }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const signupMutate = await signup({ name, email, password });
+
+      if (signupMutate) {
+        toast.success("Cadastro realizado com sucesso!");
+      }
+    } catch (error: unknown) {
+      toast.error("Erro ao realizar o cadastro");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center min-h-[calc(100vh-4rem)] justify-center flex-col gap-6">
@@ -64,7 +83,7 @@ export function Signup() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" /*disabled={loading}*/>
+            <Button type="submit" className="w-full" disabled={loading}>
               Cadastrar
             </Button>
           </form>
@@ -84,5 +103,5 @@ export function Signup() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
