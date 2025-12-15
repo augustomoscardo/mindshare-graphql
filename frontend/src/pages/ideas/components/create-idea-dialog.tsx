@@ -10,6 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { useMutation } from "@apollo/client/react"
+import { CREATE_IDEA } from "@/lib/graphql/mutations/Idea";
+import { toast } from "sonner";
 
 interface CreateIdeaDialogProps {
   open: boolean;
@@ -20,13 +23,31 @@ interface CreateIdeaDialogProps {
 export function CreateIdeaDialog({
   open,
   onOpenChange,
-  onSuccess,
 }: CreateIdeaDialogProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const [createIdea, { loading }] = useMutation(CREATE_IDEA, {
+    onCompleted() {
+      toast.success("Ideia criada com sucesso.");
+      onOpenChange(false)
+    },
+    onError() {
+      toast.error("Falha ao criar ideia.");
+    }
+  })
+
+
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    createIdea({
+      variables: {
+        data: {
+          title,
+          description
+        }
+      }
+    })
   }
 
   function handleCancel() {
@@ -58,6 +79,7 @@ export function CreateIdeaDialog({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full"
+              disabled={loading}
             />
           </div>
           <div className="space-y-1">
@@ -71,13 +93,14 @@ export function CreateIdeaDialog({
               onChange={(e) => setDescription(e.target.value)}
               className="w-full resize-none"
               rows={6}
+              disabled={loading}
             />
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={handleCancel}>
               Cancelar
             </Button>
-            <Button type="submit">Salvar</Button>
+            <Button type="submit" disabled={loading}>Salvar</Button>
           </div>
         </form>
       </DialogContent>
