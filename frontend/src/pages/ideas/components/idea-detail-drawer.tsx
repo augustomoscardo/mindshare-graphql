@@ -1,14 +1,14 @@
 import { Drawer, DrawerContentRight } from "@/components/ui/drawer"
 import { useLazyQuery, useMutation } from "@apollo/client/react"
-import { GET_IDEA } from "../../../lib/graphql/queries/Idea"
+import { GET_IDEA } from "@/lib/graphql/queries/Idea"
 import { useEffect, useState } from "react"
-import { Idea } from "../../../types"
-import { Button } from "../../../components/ui/button"
+import { Idea } from "@/types/index"
+import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { CommentsList } from "@/pages/ideas/components/comments-list"
 import { CommentArea } from "@/pages/ideas/components/comment-area"
-import { CREATE_COMMENT } from "@/lib/graphql/mutations/Comment"
-import { TOGGLE_VOTE } from "@/lib/graphql/mutations/Vote"
+// import { CREATE_COMMENT } from "@/lib/graphql/mutations/Comment"
+// import { TOGGLE_VOTE } from "@/lib/graphql/mutations/Vote"
 import { toast } from "sonner"
 
 interface IdeaDetailDrawerProps {
@@ -28,37 +28,37 @@ export function IdeaDetailDrawer({
     GET_IDEA
   )
 
-  const [createCommentMutation] = useMutation(CREATE_COMMENT, {
-    refetchQueries: [{ query: GET_IDEA, variables: { ideaId } }],
-    onCompleted: () => {
-      setCommentContent("")
-    },
-  })
+  // const [createCommentMutation] = useMutation(CREATE_COMMENT, {
+  //   refetchQueries: [{ query: GET_IDEA, variables: { ideaId } }],
+  //   onCompleted: () => {
+  //     setCommentContent("")
+  //   },
+  // })
 
-  const [toggleVoteMutation] = useMutation(TOGGLE_VOTE, {
-    refetchQueries: [{ query: GET_IDEA, variables: { ideaId } }],
-  })
+  // const [toggleVoteMutation] = useMutation(TOGGLE_VOTE, {
+  //   refetchQueries: [{ query: GET_IDEA, variables: { ideaId } }],
+  // })
 
-  const handleToggleVote = () => {
-    toggleVoteMutation({
-      variables: {
-        ideaId,
-      },
-    })
-  }
+  // const handleToggleVote = () => {
+  //   toggleVoteMutation({
+  //     variables: {
+  //       ideaId,
+  //     },
+  //   })
+  // }
 
-  const handleAddComment = () => {
-    if (!commentContent) toast.error("Por favor insira um comentário")
+  // const handleAddComment = () => {
+  //   if (!commentContent) toast.error("Por favor insira um comentário")
 
-    createCommentMutation({
-      variables: {
-        ideaId,
-        data: {
-          content: commentContent,
-        },
-      },
-    })
-  }
+  //   createCommentMutation({
+  //     variables: {
+  //       ideaId,
+  //       data: {
+  //         content: commentContent,
+  //       },
+  //     },
+  //   })
+  // }
 
   useEffect(() => {
     getIdeaQuery({
@@ -100,8 +100,8 @@ export function IdeaDetailDrawer({
         <CommentArea
           commentContent={commentContent || ""}
           setCommentContent={setCommentContent}
-          handleAddComment={handleAddComment}
-          handleVote={handleToggleVote}
+          handleAddComment={console.log}
+          handleVote={console.log}
           idea={idea}
         />
       </DrawerContentRight>

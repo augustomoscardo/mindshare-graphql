@@ -28,6 +28,7 @@ interface AuthState {
   isAuthenticated: boolean;
   signup: (data: RegisterInput) => Promise<boolean>;
   login: (data: LoginInput) => Promise<boolean>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
