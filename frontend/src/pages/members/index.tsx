@@ -16,8 +16,8 @@ import { DeleteMemberDialog } from "@/pages/members/components/delete-member-dia
 export function Members() {
   const [searchQuery, setSearchQuery] = useState("")
   const [openInviteDialog, setOpenInviteDialog] = useState(false)
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [openEditMemberDialog, setOpenEditMemberDialog] = useState(false)
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [member, setMember] = useState<User | null>(null)
 
   const currentUserId = useAuthStore((state) => state.user?.id)
@@ -94,7 +94,7 @@ export function Members() {
         onCreated={() => refetch()}
       />
 
-      {/* <EditMemberDialog
+      <EditMemberDialog
         open={openEditMemberDialog}
         onOpenChange={setOpenEditMemberDialog}
         onUpdated={() => refetch()}
@@ -105,7 +105,7 @@ export function Members() {
         open={openDeleteDialog}
         onOpenChange={setOpenDeleteDialog}
         member={member}
-      /> */}
+      />
     </Page>
   )
 }
